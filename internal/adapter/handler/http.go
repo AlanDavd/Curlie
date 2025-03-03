@@ -3,22 +3,24 @@ package handler
 import (
 	"net/http"
 
-	"github.com/alandavd/curlie/internal/domain/curl"
 	"github.com/gin-gonic/gin"
+
+	"curlie/internal/core/services"
+	"curlie/internal/core/domain"
 )
 
-type CurlHandler struct {
-	service curl.Service
+type curlHandler struct {
+	service services.CurlService
 }
 
-func NewCurlHandler(service curl.Service) *CurlHandler {
-	return &CurlHandler{
+func NewCurlHandler(service services.CurlService) *curlHandler {
+	return &curlHandler{
 		service: service,
 	}
 }
 
-func (h *CurlHandler) GenerateCurl(c *gin.Context) {
-	var request curl.Request
+func (h *curlHandler) GenerateCurl(c *gin.Context) {
+	var request domain.CurlRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -35,7 +37,7 @@ func (h *CurlHandler) GenerateCurl(c *gin.Context) {
 		request.Method = "GET"
 	}
 
-	command, err := h.service.GenerateCurlCommand(request)
+	command, err := h.service.GenerateCurlCommand(&request)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -44,4 +46,4 @@ func (h *CurlHandler) GenerateCurl(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"command": command,
 	})
-} 
+}

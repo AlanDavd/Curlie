@@ -1,21 +1,30 @@
-package service
+package services
 
 import (
 	"fmt"
 	"strings"
 
-	"github.com/alandavd/curlie/internal/domain/curl"
+	"curlie/internal/core/ports"
+	"curlie/internal/core/domain"
 )
 
+// CurlService defines the interface for curl command generation.
+type CurlService interface {
+	GenerateCurlCommand(req *domain.CurlRequest) (string, error)
+}
+
+// curlService implements CurlService interface.
 type curlService struct {
-	repo curl.Repository
+	repo ports.CurlRepository
 }
 
-func NewCurlService(repo curl.Repository) curl.Service {
-	return &curlService{repo: repo}
+func NewCurlService(repo ports.CurlRepository) *curlService {
+	return &curlService{
+		repo: repo,
+	}
 }
 
-func (s *curlService) GenerateCurlCommand(req curl.Request) (string, error) {
+func (c *curlService) GenerateCurlCommand(req *domain.CurlRequest) (string, error) {
 	var parts []string
 	parts = append(parts, "curl")
 
@@ -23,12 +32,10 @@ func (s *curlService) GenerateCurlCommand(req curl.Request) (string, error) {
 	if req.Method != "" && req.Method != "GET" {
 		parts = append(parts, "-X", req.Method)
 	}
-
 	// Add headers
 	for key, value := range req.Headers {
 		parts = append(parts, "-H", fmt.Sprintf("%s: %s", key, value))
 	}
-
 	// Add body if present
 	if req.Body != "" {
 		parts = append(parts, "-d", fmt.Sprintf("'%s'", req.Body))
@@ -43,8 +50,7 @@ func (s *curlService) GenerateCurlCommand(req curl.Request) (string, error) {
 		}
 		url = fmt.Sprintf("%s?%s", url, strings.Join(queryParts, "&"))
 	}
-
 	parts = append(parts, fmt.Sprintf("'%s'", url))
 
 	return strings.Join(parts, " "), nil
-} 
+}

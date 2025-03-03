@@ -1,11 +1,11 @@
-package server
+package handler
 
 import (
 	"net/http"
 
-	"github.com/alandavd/curlie/internal/application/service"
-	"github.com/alandavd/curlie/internal/infrastructure/handler"
 	"github.com/gin-gonic/gin"
+
+	"curlie/internal/core/services"
 )
 
 type Server struct {
@@ -16,14 +16,14 @@ func NewServer() *Server {
 	engine := gin.Default()
 
 	// Initialize dependencies
-	curlService := service.NewCurlService(nil) // No repository for now
-	curlHandler := handler.NewCurlHandler(curlService)
+	curlService := services.NewCurlService(nil) // No repository for now
+	curlHandler := NewCurlHandler(curlService)
 
 	// Load HTML templates
-	engine.LoadHTMLGlob("internal/infrastructure/ui/templates/*")
+	engine.LoadHTMLGlob("internal/adapter/handler/ui/templates/*")
 
 	// Serve static files
-	engine.Static("/static", "internal/infrastructure/ui/static")
+	engine.Static("/static", "internal/adapter/handler/ui/static")
 
 	// Routes
 	engine.GET("/", func(c *gin.Context) {
@@ -50,4 +50,4 @@ func NewServer() *Server {
 
 func (s *Server) Run(addr string) error {
 	return s.engine.Run(addr)
-} 
+}

@@ -1,4 +1,4 @@
-module github.com/alandavd/curlie
+module curlie
 
 go 1.21
 

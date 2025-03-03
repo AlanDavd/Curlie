@@ -3,12 +3,12 @@ package main
 import (
 	"log"
 
-	"github.com/alandavd/curlie/internal/infrastructure/server"
+	"curlie/internal/adapter/handler"
 )
 
 func main() {
-	srv := server.NewServer()
+	srv := handler.NewServer()
 	if err := srv.Run(":8080"); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
-} 
+}
