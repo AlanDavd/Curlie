@@ -25,10 +25,18 @@ go mod tidy
 3. Run the application:
 
 ```bash
-go run main.go
+go run cmd/api/main.go
+
+go run cmd/server/main.go
 ```
 
 The server will start on `http://localhost:8080`
+
+4. Run tests:
+
+```bash
+go test ./...
+```
 
 ## API Usage
 
