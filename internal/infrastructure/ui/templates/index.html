@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Curlie - Curl Command Generator</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <!-- Cookie Consent -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css"
+    />
+    <!-- Google AdSense Script -->
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR-CLIENT-ID"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Navigation -->
+      <nav class="mb-8 flex justify-center space-x-4">
+        <a href="/" class="text-indigo-600 hover:text-indigo-900">Home</a>
+        <a href="/privacy" class="text-indigo-600 hover:text-indigo-900"
+          >Privacy Policy</a
+        >
+        <a href="/terms" class="text-indigo-600 hover:text-indigo-900"
+          >Terms of Service</a
+        >
+      </nav>
+
+      <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Curlie</h1>
+
+      <!-- Top Banner Ad -->
+      <div class="w-full mb-8 flex justify-center">
+        <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-3xl">
+          <ins
+            class="adsbygoogle"
+            style="display: block"
+            data-ad-client="YOUR-CLIENT-ID"
+            data-ad-slot="YOUR-AD-SLOT"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
+          <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-8">
+        <!-- Left Sidebar Ad (Desktop only) -->
+        <div class="hidden md:block">
+          <div class="bg-white p-4 rounded-lg shadow-lg sticky top-4">
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-client="YOUR-CLIENT-ID"
+              data-ad-slot="YOUR-AD-SLOT"
+              data-ad-format="vertical"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="md:col-span-2">
+          <div class="bg-white rounded-lg shadow-lg p-6">
+            <form id="curlForm" class="space-y-6">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700"
+                    >Method</label
+                  >
+                  <select
+                    id="method"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  >
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                    <option value="PATCH">PATCH</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700"
+                    >URL</label
+                  >
+                  <input
+                    type="text"
+                    id="url"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    placeholder="https://api.example.com"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700"
+                  >Headers</label
+                >
+                <div id="headers" class="space-y-2">
+                  <div class="header-pair grid grid-cols-2 gap-2">
+                    <input
+                      type="text"
+                      class="header-key mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      placeholder="Key"
+                    />
+                    <input
+                      type="text"
+                      class="header-value mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      placeholder="Value"
+                    />
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  id="addHeader"
+                  class="mt-2 px-3 py-1 text-sm text-indigo-600 hover:text-indigo-900"
+                >
+                  + Add Header
+                </button>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700"
+                  >Query Parameters</label
+                >
+                <div id="queryParams" class="space-y-2">
+                  <div class="query-pair grid grid-cols-2 gap-2">
+                    <input
+                      type="text"
+                      class="query-key mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      placeholder="Key"
+                    />
+                    <input
+                      type="text"
+                      class="query-value mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      placeholder="Value"
+                    />
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  id="addQuery"
+                  class="mt-2 px-3 py-1 text-sm text-indigo-600 hover:text-indigo-900"
+                >
+                  + Add Query Parameter
+                </button>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700"
+                  >Request Body</label
+                >
+                <textarea
+                  id="body"
+                  rows="4"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="Request body (JSON)"
+                ></textarea>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  Generate Curl Command
+                </button>
+              </div>
+            </form>
+
+            <div class="mt-6">
+              <label class="block text-sm font-medium text-gray-700"
+                >Generated Curl Command</label
+              >
+              <div class="mt-1 relative">
+                <pre
+                  id="result"
+                  class="block w-full rounded-md border border-gray-300 bg-gray-50 p-4 text-sm font-mono"
+                ></pre>
+                <button
+                  id="copyCommand"
+                  class="absolute top-2 right-2 px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- In-Content Ad (after results) -->
+          <div class="mt-8 bg-white p-4 rounded-lg shadow-lg">
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-client="YOUR-CLIENT-ID"
+              data-ad-slot="YOUR-AD-SLOT"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+        </div>
+
+        <!-- Right Sidebar Ad (Desktop only) -->
+        <div class="hidden md:block">
+          <div class="bg-white p-4 rounded-lg shadow-lg sticky top-4">
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-client="YOUR-CLIENT-ID"
+              data-ad-slot="YOUR-AD-SLOT"
+              data-ad-format="vertical"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Banner Ad -->
+      <div class="w-full mt-8 flex justify-center">
+        <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-3xl">
+          <ins
+            class="adsbygoogle"
+            style="display: block"
+            data-ad-client="YOUR-CLIENT-ID"
+            data-ad-slot="YOUR-AD-SLOT"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
+          <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+    <script>
+      window.cookieconsent.initialise({
+        palette: {
+          popup: {
+            background: "#4338ca",
+            text: "#ffffff",
+          },
+          button: {
+            background: "#ffffff",
+            text: "#4338ca",
+          },
+        },
+        content: {
+          message:
+            "This website uses cookies to ensure you get the best experience and to deliver relevant ads.",
+          dismiss: "Got it!",
+          link: "Learn more",
+          href: "/privacy",
+        },
+      });
+    </script>
+  </body>
+</html>
